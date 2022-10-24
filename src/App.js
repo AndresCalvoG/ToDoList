@@ -17,7 +17,7 @@ function App() {
       <Searcher />
       <List>
         {todos.map((todo) => (
-          <Item key={todo.text} text={todo.text} />
+          <Item key={todo.text} text={todo.text} completed={todo.completed} />
         ))}
       </List>
       <NewItemButton />
