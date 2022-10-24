@@ -30,13 +30,33 @@ function App() {
     });
   }
 
+  const completeTodo = (text) => {
+    const todoIndex = todos.findIndex((todo) => todo.text === text);
+    const newTodos = [...todos];
+    newTodos[todoIndex].completed = true;
+    setTodos(newTodos);
+  };
+
+  const deleteTodo = (text) => {
+    const todoIndex = todos.findIndex((todo) => todo.text === text);
+    const newTodos = [...todos];
+    newTodos.splice(todoIndex, 1);
+    setTodos(newTodos);
+  };
+
   return (
     <>
       <Counter total={totalTodos} completed={completedTodos} />
       <Searcher searchValue={searchValue} setSearchValue={setSearchValue} />
       <List>
         {searchedTodos.map((todo) => (
-          <Item key={todo.text} text={todo.text} completed={todo.completed} />
+          <Item
+            key={todo.text}
+            text={todo.text}
+            completed={todo.completed}
+            onComplete={() => completeTodo(todo.text)}
+            onDelete={() => deleteTodo(todo.text)}
+          />
         ))}
       </List>
       <NewItemButton />
