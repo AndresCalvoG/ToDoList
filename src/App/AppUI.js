@@ -6,6 +6,8 @@ import { Item } from "../components/Item/Item";
 import { NewItemButton } from "../components/NewItemButton/NewItemButton";
 
 function AppUI({
+  loading,
+  error,
   totalTodos,
   completedTodos,
   searchValue,
@@ -19,6 +21,9 @@ function AppUI({
       <Counter total={totalTodos} completed={completedTodos} />
       <Searcher searchValue={searchValue} setSearchValue={setSearchValue} />
       <List>
+        {error && <p>Desesperate..</p>}
+        {loading && <p>Cargando...</p>}
+        {!loading && !searchedTodos.length && <p>Crea un todo</p>}
         {searchedTodos.map((todo) => (
           <Item
             key={todo.text}
