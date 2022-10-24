@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Styled from "styled-components";
 
 const Input = Styled.input`
@@ -26,8 +26,18 @@ const Input = Styled.input`
   }
 `;
 function Searcher() {
-  const onSearchValue = (event) => {};
-  return <Input placeholder="Buscar..." onChange={onSearchValue} />;
+  const [searchValue, setSearchValue] = useState("");
+
+  const onSearchValue = (event) => {
+    setSearchValue(event.target.value);
+  };
+  return (
+    <Input
+      placeholder="Buscar..."
+      onChange={onSearchValue}
+      value={searchValue}
+    />
+  );
 }
 
 export { Searcher };
