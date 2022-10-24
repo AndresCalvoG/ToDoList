@@ -46,12 +46,15 @@ const Container = Styled.li`
   }
 }
 `;
+
 function Item({ text, completed }) {
+  const onComplete = () => {};
+  const onDelete = () => {};
   return (
     <Container completed={completed}>
-      <span>&#10004;</span>
+      <span onClick={onComplete}>&#10004;</span>
       <p>{text}</p>
-      <span>X</span>
+      <span onClick={onDelete}>X</span>
     </Container>
   );
 }

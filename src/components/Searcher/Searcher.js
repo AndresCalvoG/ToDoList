@@ -26,7 +26,8 @@ const Input = Styled.input`
   }
 `;
 function Searcher() {
-  return <Input placeholder="Buscar..." />;
+  const onSearchValue = (event) => {};
+  return <Input placeholder="Buscar..." onChange={onSearchValue} />;
 }
 
 export { Searcher };

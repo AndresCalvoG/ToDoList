@@ -27,8 +27,10 @@ const Button = Styled.button`
 }
 `;
 
+const addItem = () => {};
+
 function NewItemButton() {
-  return <Button>+</Button>;
+  return <Button onClick={addItem}>+</Button>;
 }
 
 export { NewItemButton };
