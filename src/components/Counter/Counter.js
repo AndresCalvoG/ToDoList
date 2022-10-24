@@ -7,8 +7,12 @@ const Header = Styled.h1`
   margin: 0;
   padding: 4.8rem;
 `;
-function Counter() {
-  return <Header>Has completado 2 de 3 items de ToDoList</Header>;
+function Counter({ total, completed }) {
+  return (
+    <Header>
+      Has completado {completed} de {total} items de ToDoList
+    </Header>
+  );
 }
 
 export { Counter };

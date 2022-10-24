@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Styled from "styled-components";
 
 const Input = Styled.input`
@@ -25,9 +25,7 @@ const Input = Styled.input`
   outline-color: #61DAFA;
   }
 `;
-function Searcher() {
-  const [searchValue, setSearchValue] = useState("");
-
+function Searcher({ searchValue, setSearchValue }) {
   const onSearchValue = (event) => {
     setSearchValue(event.target.value);
   };
