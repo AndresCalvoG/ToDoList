@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import { Counter } from "./components/Counter/Counter";
-import { Searcher } from "./components/Searcher/Searcher";
-import { List } from "./components/List/List";
-import { Item } from "./components/Item/Item";
-import { NewItemButton } from "./components/NewItemButton/NewItemButton";
+import { AppUI } from "./AppUI";
 
 const defaultTodos = [
   { text: "Cortar cebolla", completed: false },
@@ -45,22 +41,15 @@ function App() {
   };
 
   return (
-    <>
-      <Counter total={totalTodos} completed={completedTodos} />
-      <Searcher searchValue={searchValue} setSearchValue={setSearchValue} />
-      <List>
-        {searchedTodos.map((todo) => (
-          <Item
-            key={todo.text}
-            text={todo.text}
-            completed={todo.completed}
-            onComplete={() => completeTodo(todo.text)}
-            onDelete={() => deleteTodo(todo.text)}
-          />
-        ))}
-      </List>
-      <NewItemButton />
-    </>
+    <AppUI
+      totalTodos={totalTodos}
+      completedTodos={completedTodos}
+      searchValue={searchValue}
+      setSearchValue={setSearchValue}
+      searchedTodos={searchedTodos}
+      completeTodo={completeTodo}
+      deleteTodo={deleteTodo}
+    />
   );
 }
 
