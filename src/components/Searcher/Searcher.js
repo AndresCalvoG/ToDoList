@@ -1,5 +1,6 @@
 import React from "react";
 import Styled from "styled-components";
+import { Context } from "../../context";
 
 const Input = Styled.input`
   background: #F9FBFC;
@@ -25,7 +26,8 @@ const Input = Styled.input`
   outline-color: #61DAFA;
   }
 `;
-function Searcher({ searchValue, setSearchValue }) {
+function Searcher() {
+  const { searchValue, setSearchValue } = React.useContext(Context);
   const onSearchValue = (event) => {
     setSearchValue(event.target.value);
   };
