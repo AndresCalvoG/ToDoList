@@ -18,6 +18,7 @@ const Button = Styled.button`
   align-items: center;
   height: 64px;
   width: 64px;
+  z-index: 1;
 
   transform: rotate(0);
   transition: .3s ease;
@@ -29,7 +30,7 @@ const Button = Styled.button`
 
 function NewItemButton({ setOpenModal }) {
   const onClickButton = () => {
-    setOpenModal(true);
+    setOpenModal((prevState) => !prevState);
   };
   return <Button onClick={onClickButton}>+</Button>;
 }

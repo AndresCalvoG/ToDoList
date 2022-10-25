@@ -6,6 +6,7 @@ import { Item } from "../components/Item/Item";
 import { NewItemButton } from "../components/NewItemButton/NewItemButton";
 import { Context } from "../context/index";
 import { Modal } from "../components/Modal/Modal";
+import { TodoForm } from "../components/TodoForm/TodoForm";
 
 function AppUI() {
   const {
@@ -39,7 +40,7 @@ function AppUI() {
 
       {!!openModal && (
         <Modal>
-          <h1>Add</h1>
+          <TodoForm />
         </Modal>
       )}
     </>
