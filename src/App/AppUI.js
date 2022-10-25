@@ -7,6 +7,9 @@ import { NewItemButton } from "../components/NewItemButton/NewItemButton";
 import { Context } from "../context/index";
 import { Modal } from "../components/Modal/Modal";
 import { TodoForm } from "../components/TodoForm/TodoForm";
+import { TodosError } from "../components/TodosError/TodosError";
+import { TodosLoading } from "../components/TodosLoading/TodosLoading";
+import { EmptyTodos } from "../components/EmptyTodos/EmptyTodos.js";
 
 function AppUI() {
   const {
@@ -23,9 +26,9 @@ function AppUI() {
       <Counter />
       <Searcher />
       <List>
-        {error && <p>Desesperate..</p>}
-        {loading && <p>Cargando...</p>}
-        {!loading && !searchedTodos.length && <p>Crea un todo</p>}
+        {error && <TodosError error={error} />}
+        {loading && <TodosLoading />}
+        {!loading && !searchedTodos.length && <EmptyTodos />}
         {searchedTodos.map((todo) => (
           <Item
             key={todo.text}
