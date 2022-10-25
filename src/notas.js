@@ -23,6 +23,8 @@ Clase 1: principios de diseño:
   Donde va el estado
   *maxima cercania ala relevancia
   *statefull vs stateless
+
+  composicion de componentes: 
 */
 
 /*
