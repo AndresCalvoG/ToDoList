@@ -5,10 +5,18 @@ import { List } from "../components/List/List";
 import { Item } from "../components/Item/Item";
 import { NewItemButton } from "../components/NewItemButton/NewItemButton";
 import { Context } from "../context/index";
+import { Modal } from "../components/Modal/Modal";
 
 function AppUI() {
-  const { error, loading, searchedTodos, completeTodo, deleteTodo } =
-    React.useContext(Context);
+  const {
+    error,
+    loading,
+    searchedTodos,
+    completeTodo,
+    deleteTodo,
+    openModal,
+    setOpenModal,
+  } = React.useContext(Context);
   return (
     <>
       <Counter />
@@ -27,7 +35,13 @@ function AppUI() {
           />
         ))}
       </List>
-      <NewItemButton />
+      <NewItemButton setOpenModal={setOpenModal} />
+
+      {!!openModal && (
+        <Modal>
+          <h1>Add</h1>
+        </Modal>
+      )}
     </>
   );
 }

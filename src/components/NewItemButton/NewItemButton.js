@@ -27,10 +27,11 @@ const Button = Styled.button`
 }
 `;
 
-const addItem = () => {};
-
-function NewItemButton() {
-  return <Button onClick={addItem}>+</Button>;
+function NewItemButton({ setOpenModal }) {
+  const onClickButton = () => {
+    setOpenModal(true);
+  };
+  return <Button onClick={onClickButton}>+</Button>;
 }
 
 export { NewItemButton };
