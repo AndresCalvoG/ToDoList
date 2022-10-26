@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Styled from "styled-components";
-import { Context } from "../../context/index";
 
 const Form = Styled.form`
   width: 90%;
@@ -72,9 +71,7 @@ const Form = Styled.form`
   }
 `;
 
-function TodoForm() {
-  const { addTodo, setOpenModal } = React.useContext(Context);
-
+function TodoForm({ addTodo, setOpenModal }) {
   const [newTodo, setNewTodo] = useState("");
 
   const onChange = (e) => {
