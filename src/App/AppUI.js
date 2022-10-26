@@ -10,6 +10,7 @@ import { TodoForm } from "../components/TodoForm/TodoForm";
 import { TodosError } from "../components/TodosError/TodosError";
 import { TodosLoading } from "../components/TodosLoading/TodosLoading";
 import { EmptyTodos } from "../components/EmptyTodos/EmptyTodos.js";
+import { Header } from "../components/Header/Header";
 
 function AppUI() {
   const {
@@ -20,11 +21,17 @@ function AppUI() {
     deleteTodo,
     openModal,
     setOpenModal,
+    totalTodos,
+    completedTodos,
+    searchValue,
+    setSearchValue,
   } = React.useContext(Context);
   return (
     <>
-      <Counter />
-      <Searcher />
+      <Header>
+        <Counter totalTodos={totalTodos} completedTodos={completedTodos} />
+        <Searcher searchValue={searchValue} setSearchValue={setSearchValue} />
+      </Header>
       <List>
         {error && <TodosError error={error} />}
         {loading && <TodosLoading />}
