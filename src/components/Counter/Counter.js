@@ -6,10 +6,11 @@ const Header = Styled.h1`
   text-align: center;
   margin: 0;
   padding: 4.8rem;
+  opacity: ${(props) => (props.loading ? "25%" : "100%")};
 `;
-function Counter({ totalTodos, completedTodos }) {
+function Counter({ totalTodos, completedTodos, loading }) {
   return (
-    <Header>
+    <Header loading={loading}>
       Has completado {completedTodos} de {totalTodos} items de ToDoList
     </Header>
   );

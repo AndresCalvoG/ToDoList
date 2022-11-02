@@ -31,7 +31,7 @@ function App() {
 
   return (
     <>
-      <Header>
+      <Header loading={loading}>
         <Counter totalTodos={totalTodos} completedTodos={completedTodos} />
         <Searcher searchValue={searchValue} setSearchValue={setSearchValue} />
       </Header>

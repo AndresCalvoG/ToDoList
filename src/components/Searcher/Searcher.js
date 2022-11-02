@@ -24,8 +24,11 @@ const Input = Styled.input`
   &:focus {
   outline-color: #61DAFA;
   }
+  &:disabled{
+    opacity: 25%;
+  }
 `;
-function Searcher({ searchValue, setSearchValue }) {
+function Searcher({ searchValue, setSearchValue, loading }) {
   const onSearchValue = (event) => {
     setSearchValue(event.target.value);
   };
@@ -34,6 +37,7 @@ function Searcher({ searchValue, setSearchValue }) {
       placeholder="Buscar..."
       onChange={onSearchValue}
       value={searchValue}
+      disabled={loading}
     />
   );
 }
