@@ -10,6 +10,7 @@ import { TodoForm } from "../components/TodoForm/TodoForm";
 import { TodosError } from "../components/TodosError/TodosError";
 import { TodosLoading } from "../components/TodosLoading/TodosLoading";
 import { EmptyTodos } from "../components/EmptyTodos/EmptyTodos.js";
+import { EmptySearch } from "../components/EmptySearch/EmptySearch";
 import { Header } from "../components/Header/Header";
 
 function App() {
@@ -38,9 +39,14 @@ function App() {
         error={error}
         loading={loading}
         searchedTodos={searchedTodos}
+        totalTodos={totalTodos}
+        searchText={searchValue}
         onError={() => <TodosError error={error} />}
         onLoading={() => <TodosLoading />}
         onEmptyTodos={() => <EmptyTodos />}
+        onEmptySearchResults={(searchText) => (
+          <EmptySearch searchText={searchText} />
+        )}
         render={(todo) => (
           <Item
             key={todo.text}
@@ -50,7 +56,17 @@ function App() {
             onDelete={() => deleteTodo(todo.text)}
           />
         )}
-      />
+      >
+        {/* {(todo) => (
+          <Item
+            key={todo.text}
+            text={todo.text}
+            completed={todo.completed}
+            onComplete={() => completeTodo(todo.text)}
+            onDelete={() => deleteTodo(todo.text)}
+          />
+        )} */}
+      </List>
       <NewItemButton setOpenModal={setOpenModal} />
 
       {!!openModal && (
