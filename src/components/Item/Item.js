@@ -2,6 +2,7 @@ import React from "react";
 import Styled from "styled-components";
 
 const Container = Styled.li`
+  width: 95%;
   background-color: #FAFAFA;
   position: relative;
   display: flex;
@@ -39,8 +40,8 @@ const Container = Styled.li`
 
 & > span:nth-child(3) {
   position: absolute;
-  top: -24px;
-  right: 0;
+  top: -20px;
+  right: -10px;
   &:hover {
   color: red;
   }
