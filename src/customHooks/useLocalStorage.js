@@ -29,8 +29,8 @@ function useLocalStorage(itemName, initialValue) {
         // También podemos utilizar la última parte del try/cath (finally) para terminar la carga
         setLoading(false);
       }
-    }, 1000);
-  });
+    }, 3000);
+  }, []);
 
   const saveItem = (newItem) => {
     // Manejamos la tarea dentro de un try/catch por si ocurre algún error
