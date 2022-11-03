@@ -12,7 +12,7 @@ import { TodosLoading } from "../components/TodosLoading/TodosLoading";
 import { EmptyTodos } from "../components/EmptyTodos/EmptyTodos.js";
 import { EmptySearch } from "../components/EmptySearch/EmptySearch";
 import { Header } from "../components/Header/Header";
-import { ChangeAlertWithStorageListener } from "../components/ChangeAlert/ChangeAlert";
+import { ChangeAlert } from "../components/ChangeAlert/ChangeAlert";
 
 function App() {
   const {
@@ -76,7 +76,7 @@ function App() {
           <TodoForm addTodo={addTodo} setOpenModal={setOpenModal} />
         </Modal>
       )}
-      <ChangeAlertWithStorageListener sincronize={sincronizeTodos} />
+      <ChangeAlert sincronize={sincronizeTodos} />
     </>
   );
 }

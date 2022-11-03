@@ -1,6 +1,6 @@
 import React from "react";
 import Styled from "styled-components";
-import { withStorageListener } from "./withStorageListener";
+import { useStorageListener } from "./useStorageListener";
 
 const Alert = Styled.div`
   width: 100%;
@@ -41,7 +41,8 @@ const Alert = Styled.div`
   }
 `;
 
-function ChangeAlert({ show, toggleShow }) {
+function ChangeAlert({ sincronize }) {
+  const { show, toggleShow } = useStorageListener(sincronize);
   if (show) {
     return (
       <Alert>
@@ -56,6 +57,4 @@ function ChangeAlert({ show, toggleShow }) {
   }
 }
 
-const ChangeAlertWithStorageListener = withStorageListener(ChangeAlert);
-
-export { ChangeAlertWithStorageListener };
+export { ChangeAlert };
