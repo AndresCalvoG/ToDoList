@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 function useLocalStorage(itemName, initialValue) {
   // Creamos el estado inicial para nuestros errores y carga
+  const [sincronized, setSincronized] = useState(true);
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState(initialValue);
@@ -28,9 +29,10 @@ function useLocalStorage(itemName, initialValue) {
       } finally {
         // También podemos utilizar la última parte del try/cath (finally) para terminar la carga
         setLoading(false);
+        setSincronized(true);
       }
     }, 3000);
-  }, []);
+  }, [sincronized]);
 
   const saveItem = (newItem) => {
     // Manejamos la tarea dentro de un try/catch por si ocurre algún error
@@ -44,12 +46,18 @@ function useLocalStorage(itemName, initialValue) {
     }
   };
 
+  const sincronize = () => {
+    setLoading(true);
+    setSincronized(false);
+  };
+
   // Para tener un mejor control de los datos retornados, podemos regresarlos dentro de un objeto
   return {
     item,
     saveItem,
     loading,
     error,
+    sincronize,
   };
 }
 
