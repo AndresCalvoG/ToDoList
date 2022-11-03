@@ -25,9 +25,9 @@ function List(props) {
         !props.searchedTodos.length &&
         props.onEmptySearchResults(props.searchText)}
 
-      {props.searchedTodos.map((todo) => renderFunc(todo))}
-
-      {/* <ul>{props.children}</ul> */}
+      {!props.loading &&
+        !props.error &&
+        props.searchedTodos.map((todo) => renderFunc(todo))}
     </Container>
   );
 }
