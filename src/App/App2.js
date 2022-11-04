@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Styled from "styled-components";
 
+const CODE = "paradigma";
 const App = Styled.div`
   width: 100vw;
   height: 100vh;
@@ -21,12 +22,18 @@ const App = Styled.div`
 `;
 
 function UseState({ name }) {
+  const [value, setValue] = useState("");
   const [error, setError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (loading) {
       setTimeout(() => {
+        if (value === CODE) {
+          setError(false);
+        } else {
+          setError(true);
+        }
         setLoading(false);
       }, 3000);
     }
@@ -38,8 +45,19 @@ function UseState({ name }) {
       <p>Por favor, escribe el codigo de seguridad</p>
       {error && <p>Error: el codigo es incorrecto</p>}
       {loading && <p>Cargando...</p>}
-      <input placeholder="Codigo de seguridad" />
-      <button onClick={() => setLoading(true)}>Comprobar</button>
+      <input
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+        placeholder="Codigo de seguridad"
+      />
+      <button
+        onClick={() => {
+          setError(false);
+          setLoading(true);
+        }}
+      >
+        Comprobar
+      </button>
     </div>
   );
 }
@@ -50,6 +68,7 @@ class ClassState extends React.Component {
     this.state = {
       error: false,
       loading: false,
+      value: "",
     };
   }
   componentDidUpdate() {
@@ -67,7 +86,11 @@ class ClassState extends React.Component {
         <p>Por favor, escribe el codigo de seguridad</p>
         {this.state.error && <p>Error: el codigo es incorrecto</p>}
         {this.state.loading && <p>Cargando...</p>}
-        <input placeholder="Codigo de seguridad" />
+        <input
+          value={this.state.value}
+          onChange={(e) => this.setState({ value: e.target.value })}
+          placeholder="Codigo de seguridad"
+        />
         <button onClick={() => this.setState({ loading: true })}>
           Comprobar
         </button>
