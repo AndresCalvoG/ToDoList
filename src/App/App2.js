@@ -43,7 +43,7 @@ function UseState({ name }) {
     <div>
       <h1>Eliminar {name}</h1>
       <p>Por favor, escribe el codigo de seguridad</p>
-      {error && <p>Error: el codigo es incorrecto</p>}
+      {error && !loading && <p>Error: el codigo es incorrecto</p>}
       {loading && <p>Cargando...</p>}
       <input
         value={value}
@@ -52,7 +52,6 @@ function UseState({ name }) {
       />
       <button
         onClick={() => {
-          setError(false);
           setLoading(true);
         }}
       >
@@ -74,6 +73,11 @@ class ClassState extends React.Component {
   componentDidUpdate() {
     if (this.state.loading) {
       setTimeout(() => {
+        if (this.state.value === CODE) {
+          this.setState({ error: false });
+        } else {
+          this.setState({ error: true });
+        }
         this.setState({ loading: false });
       }, 3000);
     }
@@ -84,7 +88,9 @@ class ClassState extends React.Component {
       <div>
         <h1>Eliminar {this.props.name}</h1>
         <p>Por favor, escribe el codigo de seguridad</p>
-        {this.state.error && <p>Error: el codigo es incorrecto</p>}
+        {this.state.error && !this.state.loading && (
+          <p>Error: el codigo es incorrecto</p>
+        )}
         {this.state.loading && <p>Cargando...</p>}
         <input
           value={this.state.value}
