@@ -22,37 +22,38 @@ const App = Styled.div`
 `;
 
 function UseState({ name }) {
-  const [value, setValue] = useState("");
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [state, setState] = useState({
+    value: "",
+    error: false,
+    loading: false,
+  });
 
   useEffect(() => {
-    if (loading) {
+    if (state.loading) {
       setTimeout(() => {
-        if (value === CODE) {
-          setError(false);
+        if (state.value === CODE) {
+          setState({ ...state, error: false, loading: false });
         } else {
-          setError(true);
+          setState({ ...state, error: true, loading: false });
         }
-        setLoading(false);
       }, 3000);
     }
-  }, [loading]);
+  }, [state.loading]);
 
   return (
     <div>
       <h1>Eliminar {name}</h1>
       <p>Por favor, escribe el codigo de seguridad</p>
-      {error && !loading && <p>Error: el codigo es incorrecto</p>}
-      {loading && <p>Cargando...</p>}
+      {state.error && !state.loading && <p>Error: el codigo es incorrecto</p>}
+      {state.loading && <p>Cargando...</p>}
       <input
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
+        value={state.value}
+        onChange={(e) => setState({ ...state, value: e.target.value })}
         placeholder="Codigo de seguridad"
       />
       <button
         onClick={() => {
-          setLoading(true);
+          setState({ ...state, loading: true });
         }}
       >
         Comprobar
