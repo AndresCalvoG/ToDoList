@@ -20,19 +20,25 @@ const App = Styled.div`
     align-items: center;
   }
 `;
+const Container = Styled.div`
+  width: "100%";
+  height: "50vh";
+`;
 
 function UseState({ name }) {
   const [state, setState] = useState({
     value: "",
     error: false,
     loading: false,
+    deleted: false,
+    confirmed: false,
   });
 
   useEffect(() => {
     if (state.loading) {
       setTimeout(() => {
         if (state.value === CODE) {
-          setState({ ...state, error: false, loading: false });
+          setState({ ...state, error: false, loading: false, confirmed: true });
         } else {
           setState({ ...state, error: true, loading: false });
         }
@@ -40,26 +46,61 @@ function UseState({ name }) {
     }
   }, [state.loading]);
 
-  return (
-    <div>
-      <h1>Eliminar {name}</h1>
-      <p>Por favor, escribe el codigo de seguridad</p>
-      {state.error && !state.loading && <p>Error: el codigo es incorrecto</p>}
-      {state.loading && <p>Cargando...</p>}
-      <input
-        value={state.value}
-        onChange={(e) => setState({ ...state, value: e.target.value })}
-        placeholder="Codigo de seguridad"
-      />
-      <button
-        onClick={() => {
-          setState({ ...state, loading: true });
-        }}
-      >
-        Comprobar
-      </button>
-    </div>
-  );
+  if (!state.deleted && !state.confirmed) {
+    return (
+      <Container>
+        <h1>Eliminar {name}</h1>
+        <p>Por favor, escribe el codigo de seguridad</p>
+        {state.error && !state.loading && <p>Error: el codigo es incorrecto</p>}
+        {state.loading && <p>Cargando...</p>}
+        <input
+          value={state.value}
+          onChange={(e) => setState({ ...state, value: e.target.value })}
+          placeholder="Codigo de seguridad"
+        />
+        <button
+          onClick={() => {
+            setState({ ...state, loading: true });
+          }}
+        >
+          Comprobar
+        </button>
+      </Container>
+    );
+  } else if (state.confirmed && !state.deleted) {
+    return (
+      <Container>
+        <p>Confirmacion, ¿Seguro desea eliminar?</p>
+        <button
+          onClick={() => {
+            setState({ ...state, deleted: true });
+          }}
+        >
+          Si, eliminar
+        </button>
+        <button
+          onClick={() => {
+            setState({ ...state, confirmed: false, value: "" });
+          }}
+        >
+          No, regresar
+        </button>
+      </Container>
+    );
+  } else {
+    return (
+      <Container>
+        <p>Eliminacion</p>
+        <button
+          onClick={() => {
+            setState({ ...state, confirmed: false, deleted: false, value: "" });
+          }}
+        >
+          Resetear, ir a inicio
+        </button>
+      </Container>
+    );
+  }
 }
 
 class ClassState extends React.Component {
