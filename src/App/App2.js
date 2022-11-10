@@ -34,13 +34,37 @@ function UseState({ name }) {
     confirmed: false,
   });
 
+  const onConfirm = () => {
+    setState({ ...state, error: false, loading: false, confirmed: true });
+  };
+
+  const onError = () => {
+    setState({ ...state, error: true, loading: false });
+  };
+
+  const onWrite = (e) => {
+    setState({ ...state, value: e.target.value });
+  };
+
+  const onCheck = () => {
+    setState({ ...state, loading: true });
+  };
+
+  const onDelete = () => {
+    setState({ ...state, deleted: true });
+  };
+
+  const onReset = () => {
+    setState({ ...state, confirmed: false, deleted: false, value: "" });
+  };
+
   useEffect(() => {
     if (state.loading) {
       setTimeout(() => {
         if (state.value === CODE) {
-          setState({ ...state, error: false, loading: false, confirmed: true });
+          onConfirm();
         } else {
-          setState({ ...state, error: true, loading: false });
+          onError();
         }
       }, 3000);
     }
@@ -55,49 +79,25 @@ function UseState({ name }) {
         {state.loading && <p>Cargando...</p>}
         <input
           value={state.value}
-          onChange={(e) => setState({ ...state, value: e.target.value })}
+          onChange={onWrite}
           placeholder="Codigo de seguridad"
         />
-        <button
-          onClick={() => {
-            setState({ ...state, loading: true });
-          }}
-        >
-          Comprobar
-        </button>
+        <button onClick={onCheck}>Comprobar</button>
       </Container>
     );
   } else if (state.confirmed && !state.deleted) {
     return (
       <Container>
         <p>Confirmacion, ¿Seguro desea eliminar?</p>
-        <button
-          onClick={() => {
-            setState({ ...state, deleted: true });
-          }}
-        >
-          Si, eliminar
-        </button>
-        <button
-          onClick={() => {
-            setState({ ...state, confirmed: false, value: "" });
-          }}
-        >
-          No, regresar
-        </button>
+        <button onClick={onDelete}>Si, eliminar</button>
+        <button onClick={onReset}>No, regresar</button>
       </Container>
     );
   } else {
     return (
       <Container>
         <p>Eliminacion</p>
-        <button
-          onClick={() => {
-            setState({ ...state, confirmed: false, deleted: false, value: "" });
-          }}
-        >
-          Resetear, ir a inicio
-        </button>
+        <button onClick={onReset}>Resetear, ir a inicio</button>
       </Container>
     );
   }
