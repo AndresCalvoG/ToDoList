@@ -25,6 +25,29 @@ const Container = Styled.div`
   height: "50vh";
 `;
 
+function UseReducer() {
+  const initialState = {
+    value: "",
+    error: false,
+    loading: false,
+    deleted: false,
+    confirmed: false,
+  };
+
+  const reducerObject = (state) => ({
+    ERROR: { ...state, error: true, loading: false },
+    CHECK: { ...state, loading: true },
+  });
+
+  const reducer = (state, action) => {
+    if (reducerObject(state)[action.type]) {
+      return reducerObject(state)[action.type];
+    } else {
+      return state;
+    }
+  };
+}
+
 function UseState({ name }) {
   const [state, setState] = useState({
     value: "",
