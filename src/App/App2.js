@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import Styled from "styled-components";
 
 const CODE = "paradigma";
@@ -25,7 +25,7 @@ const Container = Styled.div`
   height: "50vh";
 `;
 
-function UseReducer() {
+function UseReducer({ name }) {
   const initialState = {
     value: "",
     error: false,
@@ -33,19 +33,117 @@ function UseReducer() {
     deleted: false,
     confirmed: false,
   };
-
-  const reducerObject = (state) => ({
-    ERROR: { ...state, error: true, loading: false },
-    CHECK: { ...state, loading: true },
+  const reducerObject = (state, payload) => ({
+    CONFIRM: {
+      ...state,
+      error: false,
+      loading: false,
+      confirmed: true,
+    },
+    ERROR: {
+      ...state,
+      error: true,
+      loading: false,
+    },
+    WRITE: {
+      ...state,
+      value: payload,
+    },
+    CHECK: {
+      ...state,
+      loading: true,
+    },
+    DELETE: {
+      ...state,
+      deleted: true,
+    },
+    RESET: {
+      ...state,
+      confirmed: false,
+      deleted: false,
+      value: "",
+    },
   });
-
   const reducer = (state, action) => {
     if (reducerObject(state)[action.type]) {
-      return reducerObject(state)[action.type];
+      return reducerObject(state, action.payload)[action.type];
     } else {
       return state;
     }
   };
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    if (state.loading) {
+      setTimeout(() => {
+        if (state.value === CODE) {
+          dispatch({ type: "CONFIRM" });
+        } else {
+          dispatch({ type: "ERROR" });
+        }
+      }, 3000);
+    }
+  }, [state.loading]);
+
+  if (!state.deleted && !state.confirmed) {
+    return (
+      <Container>
+        <h1>Eliminar {name}</h1>
+        <p>Por favor, escribe el codigo de seguridad</p>
+        {state.error && !state.loading && <p>Error: el codigo es incorrecto</p>}
+        {state.loading && <p>Cargando...</p>}
+        <input
+          value={state.value}
+          onChange={(e) => {
+            dispatch({ type: "WRITE", payload: e.target.value });
+          }}
+          placeholder="Codigo de seguridad"
+        />
+        <button onClick={() => dispatch({ type: "CHECK" })}>Comprobar</button>
+      </Container>
+    );
+  } else if (state.confirmed && !state.deleted) {
+    return (
+      <Container>
+        <p>Confirmacion, ¿Seguro desea eliminar?</p>
+        <button onClick={() => dispatch({ type: "DELETE" })}>
+          Si, eliminar
+        </button>
+        <button onClick={() => dispatch({ type: "RESET" })}>
+          No, regresar
+        </button>
+      </Container>
+    );
+  } else {
+    return (
+      <Container>
+        <p>Eliminacion</p>
+        <button onClick={() => dispatch({ type: "RESET" })}>
+          Resetear, ir a inicio
+        </button>
+      </Container>
+    );
+  }
+  // const initialState = {
+  //   value: "",
+  //   error: false,
+  //   loading: false,
+  //   deleted: false,
+  //   confirmed: false,
+  // };
+
+  // const reducerObject = (state) => ({
+  //   ERROR: { ...state, error: true, loading: false },
+  //   CHECK: { ...state, loading: true },
+  // });
+
+  // const reducer = (state, action) => {
+  //   if (reducerObject(state)[action.type]) {
+  //     return reducerObject(state)[action.type];
+  //   } else {
+  //     return state;
+  //   }
+  // };
 }
 
 function UseState({ name }) {
@@ -173,6 +271,7 @@ class ClassState extends React.Component {
 function App2() {
   return (
     <App>
+      <UseReducer name="Use Reducer" />
       <UseState name="Use State" />
       <ClassState name="Class State" />
     </App>
