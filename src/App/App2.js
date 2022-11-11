@@ -33,37 +33,58 @@ function UseReducer({ name }) {
     deleted: false,
     confirmed: false,
   };
+
+  const onConfirm = () => dispatch({ type: [actionsTypes.CONFIRM] });
+  const onError = () => dispatch({ type: [actionsTypes.ERROR] });
+  const onCheck = () => dispatch({ type: [actionsTypes.CHECK] });
+  const onDelete = () => dispatch({ type: [actionsTypes.DELETE] });
+  const onReset = () => dispatch({ type: [actionsTypes.RESET] });
+
+  const onWrite = (e) => {
+    dispatch({ type: [actionsTypes.WRITE], payload: e.target.value });
+  };
+
+  const actionsTypes = {
+    CONFIRM: "CONFIRM",
+    ERROR: "ERROR",
+    WRITE: "WRITE",
+    CHECK: "CHECK",
+    DELETE: "DELETE",
+    RESET: "RESET",
+  };
+
   const reducerObject = (state, payload) => ({
-    CONFIRM: {
+    [actionsTypes.CONFIRM]: {
       ...state,
       error: false,
       loading: false,
       confirmed: true,
     },
-    ERROR: {
+    [actionsTypes.ERROR]: {
       ...state,
       error: true,
       loading: false,
     },
-    WRITE: {
+    [actionsTypes.WRITE]: {
       ...state,
       value: payload,
     },
-    CHECK: {
+    [actionsTypes.CHECK]: {
       ...state,
       loading: true,
     },
-    DELETE: {
+    [actionsTypes.DELETE]: {
       ...state,
       deleted: true,
     },
-    RESET: {
+    [actionsTypes.RESET]: {
       ...state,
       confirmed: false,
       deleted: false,
       value: "",
     },
   });
+
   const reducer = (state, action) => {
     if (reducerObject(state)[action.type]) {
       return reducerObject(state, action.payload)[action.type];
@@ -71,15 +92,16 @@ function UseReducer({ name }) {
       return state;
     }
   };
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
     if (state.loading) {
       setTimeout(() => {
         if (state.value === CODE) {
-          dispatch({ type: "CONFIRM" });
+          onConfirm();
         } else {
-          dispatch({ type: "ERROR" });
+          onError();
         }
       }, 3000);
     }
@@ -94,33 +116,25 @@ function UseReducer({ name }) {
         {state.loading && <p>Cargando...</p>}
         <input
           value={state.value}
-          onChange={(e) => {
-            dispatch({ type: "WRITE", payload: e.target.value });
-          }}
+          onChange={onWrite}
           placeholder="Codigo de seguridad"
         />
-        <button onClick={() => dispatch({ type: "CHECK" })}>Comprobar</button>
+        <button onClick={onCheck}>Comprobar</button>
       </Container>
     );
   } else if (state.confirmed && !state.deleted) {
     return (
       <Container>
         <p>Confirmacion, ¿Seguro desea eliminar?</p>
-        <button onClick={() => dispatch({ type: "DELETE" })}>
-          Si, eliminar
-        </button>
-        <button onClick={() => dispatch({ type: "RESET" })}>
-          No, regresar
-        </button>
+        <button onClick={onDelete}>Si, eliminar</button>
+        <button onClick={onReset}>No, regresar</button>
       </Container>
     );
   } else {
     return (
       <Container>
         <p>Eliminacion</p>
-        <button onClick={() => dispatch({ type: "RESET" })}>
-          Resetear, ir a inicio
-        </button>
+        <button onClick={onReset}>Resetear, ir a inicio</button>
       </Container>
     );
   }
