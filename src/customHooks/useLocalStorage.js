@@ -1,11 +1,57 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
+
+const initialState = ({ initialValue }) => ({
+  sincronized: true,
+  error: false,
+  loading: true,
+  item: initialValue,
+});
+
+const actionTypes = {
+  error: "ERROR",
+  success: "SUCCESS",
+  save: "SAVE",
+  sincronize: "SINCRONIZE",
+};
+
+const reducerObject = (state, payload) => ({
+  [actionTypes.error]: {
+    ...state,
+    error: true,
+  },
+  [actionTypes.success]: {
+    ...state,
+    error: false,
+    loading: false,
+    sincronized: true,
+    item: payload,
+  },
+  [actionTypes.save]: {
+    ...state,
+    item: payload,
+  },
+  [actionTypes.sincronize]: {
+    ...state,
+    sincronized: false,
+    loading: true,
+  },
+});
+
+const reducer = (state, action) => {
+  return reducerObject(state, action.payload)[action.type] || state;
+};
 
 function useLocalStorage(itemName, initialValue) {
-  // Creamos el estado inicial para nuestros errores y carga
-  const [sincronized, setSincronized] = useState(true);
-  const [error, setError] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [item, setItem] = useState(initialValue);
+  const [state, dispatch] = useReducer(reducer, initialState({ initialValue }));
+  const { sincronized, error, loading, item } = state;
+  //Action Creators
+  const onError = (error) =>
+    dispatch({ type: actionTypes.error, payload: error });
+  const onSuccess = (parsedItem) =>
+    dispatch({ type: actionTypes.success, payload: parsedItem });
+  const onSave = (newItem) =>
+    dispatch({ type: actionTypes.save, payload: newItem });
+  const onSincronize = () => dispatch({ type: actionTypes.sincronize });
 
   useEffect(() => {
     // Simulamos un segundo de delay de carga
@@ -21,15 +67,10 @@ function useLocalStorage(itemName, initialValue) {
         } else {
           parsedItem = JSON.parse(localStorageItem);
         }
-
-        setItem(parsedItem);
+        onSuccess(parsedItem);
       } catch (error) {
         // En caso de un error lo guardamos en el estado
-        setError(error);
-      } finally {
-        // También podemos utilizar la última parte del try/cath (finally) para terminar la carga
-        setLoading(false);
-        setSincronized(true);
+        onError(error);
       }
     }, 3000);
   }, [sincronized]);
@@ -39,16 +80,15 @@ function useLocalStorage(itemName, initialValue) {
     try {
       const stringifiedItem = JSON.stringify(newItem);
       localStorage.setItem(itemName, stringifiedItem);
-      setItem(newItem);
+      onSave(newItem);
     } catch (error) {
       // En caso de algún error lo guardamos en el estado
-      setError(error);
+      onError(error);
     }
   };
 
   const sincronize = () => {
-    setLoading(true);
-    setSincronized(false);
+    onSincronize();
   };
 
   // Para tener un mejor control de los datos retornados, podemos regresarlos dentro de un objeto
